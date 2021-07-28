@@ -1,0 +1,42 @@
+
+class HigherOrder {
+    init() {
+        let arrInt = [1,2,3,4,5,6]
+        let resInt = arrInt.customFilter { (item, index) -> Bool in
+            if item%2 == 0 {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        print(resInt)
+
+        let arrStr = ["1","2","3","4","5","6"]
+        let resStr = arrStr.customFilter { (item, index) -> Bool in
+            if item == "1" {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        print(resStr)
+    }
+
+
+}
+
+extension Array {
+
+    func customFilter(completion:((_ item:Element, _ index:Int)->Bool)) -> [Element] {
+        var res = [Element]()
+        for (index,item) in self.enumerated() {
+            if completion(item,index) {
+                res.append(item)
+            }
+        }
+        return res
+    }
+}
+
