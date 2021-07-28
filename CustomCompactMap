@@ -1,0 +1,32 @@
+
+class HigherOrder {
+    init() {
+        let arrInt = [1,2,3,4,5,6]
+        let resInt = arrInt.customCompactMap { (item) -> String in
+            return "\(item)"
+        }
+
+        print(resInt)
+
+        let arrStr = ["1","2","3","4","5","6","fish"]
+        let resStr = arrStr.customCompactMap { (item) -> Int? in
+            return Int(item)
+        }
+
+        print(resStr)
+    }
+}
+
+extension Array {
+
+    func customCompactMap<T>(completion:((_ item:Element) -> T?)) -> [T] {
+        var res = [T]()
+        for item in self {
+            if let transfom = completion(item) {
+                res.append(transfom)
+            }
+        }
+        return res
+    }
+}
+
