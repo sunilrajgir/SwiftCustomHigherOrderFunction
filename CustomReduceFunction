@@ -1,0 +1,30 @@
+
+class HigherOrder {
+    init() {
+        let arrInt = [1,2,3,4,5,6]
+        let resInt = arrInt.customReduce(0) { (interimResult, item) -> Int in
+            return interimResult + item
+        }
+
+        print(resInt)
+
+        let arrStr = ["1","2","3","4","5","6"]
+        let resStr = arrStr.customReduce("") { (interimResult, item) -> String in
+            return interimResult + item
+        }
+
+        print(resStr)
+    }
+}
+
+extension Array {
+
+    func customReduce<Result>(_ initialResult:Result, completion:(_ interimResult:Result, _ item:Element) -> Result) -> Result {
+        var res = initialResult
+        for item in self {
+            res = completion(res,item)
+        }
+        return res
+    }
+}
+
