@@ -1,0 +1,39 @@
+
+class HigherOrder {
+    init() {
+        let arrInt = [1,2,3,4,5,6]
+        let resInt = arrInt.customMap { (item) -> String in
+            return "\(item)"
+        }
+
+        print(resInt)
+
+        let arrStr = ["1","2","3","4","5","6"]
+        let resStr = arrStr.customMap { (item) -> Int? in
+            return Int(item)
+        }
+
+        print(resStr)
+    }
+}
+
+extension Array {
+
+    func customMap<T>(completion:((_ item:Element) -> T?)) -> [T?] {
+        var res = [T?]()
+        for item in self {
+            let transfom = completion(item)
+            res.append(transfom)
+        }
+        return res
+    }
+
+    func customReduce<Result>(_ initialResult:Result, completion:(_ interimResult:Result, _ item:Element) -> Result) -> Result {
+        var res = initialResult
+        for item in self {
+            res = completion(res,item)
+        }
+        return res
+    }
+}
+
