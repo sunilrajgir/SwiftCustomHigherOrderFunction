@@ -1,0 +1,107 @@
+
+
+let arr = [1,2,3,4,5,6]
+
+let res1 = arr.reduce(0) { (res, item) -> Int in
+    return res + item
+}
+
+let res2 = arr.map { element in
+    return "\(element)"
+}
+
+//let res3 = arr.filter(<#T##isIncluded: (Int) throws -> Bool##(Int) throws -> Bool#>)
+
+extension Array {
+
+    func customReduce<T>(interimResult:T, completionBlock:((_ res: T, _ item: Element) -> T)) -> T {
+        var partialRes = interimResult
+        for num in self {
+            partialRes = completionBlock(partialRes,num)
+        }
+        return partialRes
+    }
+
+    func customeMap<T>(completionBlock:((_ item:Element) -> T?)) -> [T?] {
+        var res = [T?]()
+        for element in self {
+            res.append(completionBlock(element))
+        }
+        return res
+    }
+
+    func customCompactMap<T>(completionBlock:((_ element:Element)->T?)) -> [T] {
+        var res = [T]()
+        for item in self {
+            if let tran = completionBlock(item) {
+                res.append(tran)
+            }
+        }
+        return res
+    }
+
+    func customefilter(completionBlock: ((_ element:Element) throws -> Bool)) rethrows ->  [Element] {
+        var res = [Element]()
+        let iterator = makeIterator()
+        for item in iterator {
+            let flag = try completionBlock(item)
+            if flag  {
+                res.append(item)
+            }
+        }
+        return res
+    }
+}
+
+enum CError: Error {
+    case illegal
+}
+
+do {
+    let res = try arr.customefilter { item in
+        if item % 2 == 0 {
+            throw CError.illegal
+        } else {
+            return true
+        }
+    }
+
+} catch let error {
+    print(error)
+}
+
+let res5 = arr.customefilter { item in
+    if item % 2 == 0 {
+        return true
+    } else {
+        return false
+    }
+}
+
+
+let res4 = arr.customCompactMap { item -> String? in
+                if item % 2 == 0 {
+                    return "\(item)"
+                } else {
+                    return nil
+                }
+            }
+
+
+
+let fres3 = arr.customeMap { item -> String? in
+    if item % 2 == 0 {
+        return "\(item)"
+    } else {
+        return nil
+    }
+}
+
+let fres2 = arr.customReduce(interimResult: "") { (res, item) -> String in
+    return res + "\(item)"
+}
+
+
+
+
+
